@@ -19,17 +19,23 @@ const checkHttp = async url => {
 		response = await got(url, {rejectUnauthorized: false});
 	} catch (error) {
 		// HTTP errors are OK because it means endpoint is reachable
-		if (error instanceof  got.HTTPError) 
+		console.log("checkHttp call to got returned error");
+		if (error instanceof  got.HTTPError) {
+	           console.log("checkHttp returned Http Error");
 		   return true;
+		}
 		else
 		   return false;
 	}
 
 	if (response.headers && response.headers.location) {
+		console.log("checkHttp call to got returned response");
 		const url = new URL(response.headers.location);
 		const hostname = url.hostname.replace(/^\[/, '').replace(/\]$/, ''); // Strip [] from IPv6
 		return !routerIps.has(hostname);
 	}
+	else 
+	   console.log("checkHttp call to got returned no  response");
 
 	return true;
 };
