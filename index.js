@@ -49,6 +49,7 @@ const isTargetReachable = async target => {
 		url.port = url.protocol === 'http:' ? 80 : 443;
 	}
 
+	console.log("isTargetReachable calling getAddress");
 	let address;
 	try {
 		address = await getAddress(url.hostname);
@@ -56,14 +57,17 @@ const isTargetReachable = async target => {
 		return false;
 	}
 
+	console.log("isTargetReachable calling routerIps.has");
 	if (!address || routerIps.has(address)) {
 		return false;
 	}
 
+	console.log("isTargetReachable calling checkHttp");
 	if ([80, 443].includes(url.port)) {
 		return checkHttp(url.toString());
 	}
 
+	console.log("isTargetReachable calling isPortReachable");
 	return isPortReachable(url.port, {host: address});
 };
 
