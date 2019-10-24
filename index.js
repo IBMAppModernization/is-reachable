@@ -17,8 +17,12 @@ const checkHttp = async url => {
 	let response;
 	try {
 		response = await got(url, {rejectUnauthorized: false});
-	} catch (_) {
-		return false;
+	} catch (error) {
+		// HTTP errors are OK because it means endpoint is reachable
+		if (error instanceof  got.HTTPError) 
+		   return true;
+		else
+		   return false;
 	}
 
 	if (response.headers && response.headers.location) {
